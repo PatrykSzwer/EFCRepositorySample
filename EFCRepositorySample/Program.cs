@@ -1,6 +1,5 @@
-using BLL.Services;
-using BLL.Services.IServices;
 using DAL.Context;
+using DAL.Entities;
 using DAL.Repository;
 using Microsoft.EntityFrameworkCore;
 
@@ -15,14 +14,15 @@ namespace EFCRepositorySample
             builder.Services.AddDbContext<ApplicationContext>(options =>
                 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
+            builder.Services.AddDefaultIdentity<SampleIdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
+                    .AddEntityFrameworkStores<ApplicationContext>();
+
             builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
 
-            builder.Services.AddTransient<IUserService, UserService>();
             // Add services to the container.
             builder.Services.AddControllersWithViews();
             var app = builder.Build();
             CreateDbIfNotExists(app);
-
 
             // Configure the HTTP request pipeline.
             if (!app.Environment.IsDevelopment())
@@ -32,12 +32,14 @@ namespace EFCRepositorySample
             app.UseStaticFiles();
 
             app.UseRouting();
+            app.UseAuthentication(); ;
 
             app.UseAuthorization();
 
             app.MapControllerRoute(
                 name: "default",
                 pattern: "{controller=Home}/{action=Index}/{id?}");
+            app.MapRazorPages();
 
             app.Run();
         }

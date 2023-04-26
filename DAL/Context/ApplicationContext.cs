@@ -1,9 +1,10 @@
-using DAL.Entities;
+﻿using DAL.Entities;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace DAL.Context
 {
-    public class ApplicationContext : DbContext
+    public class ApplicationContext : IdentityDbContext<SampleIdentityUser>
     {
         public ApplicationContext(DbContextOptions<ApplicationContext> options) : base(options)
         {
