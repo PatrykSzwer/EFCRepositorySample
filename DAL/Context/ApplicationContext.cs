@@ -1,4 +1,4 @@
-﻿using DAL.Entities;
+using DAL.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace DAL.Context
@@ -9,9 +9,7 @@ namespace DAL.Context
         {
         }
 
-        public DbSet<User> Users { get; set; }
         public DbSet<Beer> Beers { get; set; }
-        public DbSet<FavoriteBeer> FavoriteBeers { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
