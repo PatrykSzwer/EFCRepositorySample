@@ -1,6 +1,7 @@
 ﻿using DAL.Context;
 using DAL.Entities.BaseEntity;
 using Microsoft.EntityFrameworkCore;
+using System.Linq.Expressions;
 
 namespace DAL.Repository
 {
@@ -20,8 +21,13 @@ namespace DAL.Repository
             return this._entities.AsEnumerable().ToList();
         }
 
-        public T Get(string id)
+        public T Get(string id, Expression<Func<T, object>>? include = null)
         {
+            if (include != null)
+            {
+                return this._entities.Include(include).SingleOrDefault(entity => entity.Id == id)!;
+            }
+
             return this._entities.SingleOrDefault(entity => entity.Id == id)!;
         }
 
